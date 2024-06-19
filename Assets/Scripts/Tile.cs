@@ -4,7 +4,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     private TextMeshProUGUI text;
-    public char letter { get; set; }
+    public char letter { get; private set; }
     void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();

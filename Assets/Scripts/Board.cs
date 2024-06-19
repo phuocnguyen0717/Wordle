@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
     private int columnIndex;
     private string[] solution;
     private string[] validWords;
+    private string word;
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
@@ -20,6 +21,7 @@ public class Board : MonoBehaviour
     private void Start()
     {
         LoadData();
+        SetRandomWord();
     }
     public void LoadData()
     {
@@ -28,6 +30,11 @@ public class Board : MonoBehaviour
 
         textFile = Resources.Load("official_wordle_common") as TextAsset;
         solution = textFile.text.Split("\n");
+    }
+    public void SetRandomWord()
+    {
+        word = solution[Random.Range(0, solution.Length)];
+        word = word.ToLower().Trim();
     }
     void Update()
     {

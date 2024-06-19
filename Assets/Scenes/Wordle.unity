@@ -554,6 +554,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b100b5886acb7fb4497b4aae8a53c90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emptyState:
+    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    fillColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
+  occupiedState:
+    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    fillColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
+  correctState:
+    outlineColor: {r: 0.32812205, g: 0.5566038, b: 0.30718228, a: 1}
+    fillColor: {r: 0.32941177, g: 0.5568628, b: 0.30588236, a: 1}
+  wrongSpotState:
+    outlineColor: {r: 0.6603774, g: 0.6288025, b: 0.3582236, a: 1}
+    fillColor: {r: 0.65882355, g: 0.627451, b: 0.35686275, a: 1}
+  incorrectState:
+    outlineColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
+    fillColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
 --- !u!114 &796783811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1536,6 +1551,10 @@ PrefabInstance:
     - target: {fileID: 7774258479629413763, guid: 776c1a9403e8d404892712347548711f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534432627153833755, guid: 776c1a9403e8d404892712347548711f, type: 3}
+      propertyPath: <letter>k__BackingField
+      value: 122
       objectReference: {fileID: 0}
     - target: {fileID: 8623284756538668255, guid: 776c1a9403e8d404892712347548711f, type: 3}
       propertyPath: m_AnchorMax.y

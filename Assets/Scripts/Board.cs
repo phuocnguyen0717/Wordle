@@ -4,10 +4,10 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
     private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]{
-        KeyCode.A,KeyCode.B,KeyCode.C,KeyCode.D,KeyCode.E,KeyCode.F,KeyCode.G,
-        KeyCode.H,KeyCode.I,KeyCode.J,KeyCode.K,KeyCode.L,KeyCode.M,KeyCode.N,
-        KeyCode.O,KeyCode.P,KeyCode.Q,KeyCode.R,KeyCode.S,KeyCode.T,KeyCode.U,
-        KeyCode.V,KeyCode.X,KeyCode.Y,KeyCode.Z,
+        KeyCode.A,KeyCode.B,KeyCode.C,KeyCode.D,KeyCode.E,KeyCode.F,
+        KeyCode.G,KeyCode.H,KeyCode.I,KeyCode.J,KeyCode.K,KeyCode.L,
+        KeyCode.M,KeyCode.N,KeyCode.O,KeyCode.P,KeyCode.Q,KeyCode.R,
+        KeyCode.S,KeyCode.T,KeyCode.U,KeyCode.V,KeyCode.X,KeyCode.Y,KeyCode.Z,
     };
     private Row[] rows;
     private int rowIndex;
@@ -75,20 +75,39 @@ public class Board : MonoBehaviour
     }
     public void SubmitRow(Row row)
     {
+        string remaining = word;
         for (int i = 0; i < row.tiles.Length; i++)
         {
             Tile tile = row.tiles[i];
             if (word[i] == tile.letter)
             {
                 tile.SetState(correctState);
+
+                remaining = remaining.Remove(i, 1);
+                remaining = remaining.Insert(i, " ");
             }
-            else if (word.Contains(tile.letter))
-            {
-                tile.SetState(wrongSpotState);
-            }
-            else
+            else if (!word.Contains(tile.letter))
             {
                 tile.SetState(incorrectState);
+            }
+        }
+        for (int i = 0; i < row.tiles.Length; i++)
+        {
+            Tile tile = row.tiles[i];
+            if (tile.state != correctState && tile.state != incorrectState)
+            {
+                if (remaining.Contains(tile.letter))
+                {
+                    tile.SetState(wrongSpotState);
+
+                    int index = remaining.IndexOf(tile.letter);
+                    remaining = remaining.Remove(index, 1);
+                    remaining = remaining.Insert(1, " ");
+                }
+                else
+                {
+                    tile.SetState(incorrectState);
+                }
             }
         }
         rowIndex++;

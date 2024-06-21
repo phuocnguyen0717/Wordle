@@ -1,6 +1,7 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Board : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class Board : MonoBehaviour
     public Tile.State incorrectState;
     [Header("UI")]
     public TextMeshProUGUI invalidWordText;
+    public Button tryAgainButton;
+    public Button newGameButton;
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
@@ -31,7 +34,22 @@ public class Board : MonoBehaviour
     private void Start()
     {
         LoadData();
+        NewGame();
+    }
+    public void NewGame()
+    {
+        ClearBoard();
         SetRandomWord();
+        rowIndex = 0;
+        columnIndex = 0;
+        enabled = true;
+    }
+    public void TryAgain()
+    {
+        rowIndex = 0;
+        columnIndex = 0;
+        ClearBoard();
+        enabled = true;
     }
     public void LoadData()
     {
@@ -79,6 +97,17 @@ public class Board : MonoBehaviour
             }
         }
     }
+    public void ClearBoard()
+    {
+        for (int row = 0; row < rows.Length; row++)
+        {
+            for (int col = 0; col < rows[row].tiles.Length; col++)
+            {
+                rows[row].tiles[col].SetLetter('\0');
+                rows[row].tiles[col].SetState(emptyState);
+            }
+        }
+    }
     public bool IsvalidWord(string word)
     {
         for (int i = 0; i < validWords.Length; i++)
@@ -90,7 +119,17 @@ public class Board : MonoBehaviour
         }
         return false;
     }
-
+    public bool HasWon(Row row)
+    {
+        for (int i = 0; i < row.tiles.Length; i++)
+        {
+            if (row.tiles[i].state != correctState)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public void SubmitRow(Row row)
     {
         if (!IsvalidWord(row.word))
@@ -134,11 +173,25 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        if (HasWon(row))
+        {
+            enabled = false;
+        }
         rowIndex++;
         columnIndex = 0;
         if (rowIndex >= rows.Length)
         {
             enabled = false;
         }
+    }
+    private void OnEnable()
+    {
+        tryAgainButton.gameObject.SetActive(false);
+        newGameButton.gameObject.SetActive(false);
+    }
+    private void OnDisable()
+    {
+        tryAgainButton.gameObject.SetActive(true);
+        newGameButton.gameObject.SetActive(true);
     }
 }

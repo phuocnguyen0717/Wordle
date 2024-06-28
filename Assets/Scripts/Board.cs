@@ -1,5 +1,5 @@
+using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,13 +9,13 @@ public class Board : MonoBehaviour
         KeyCode.A,KeyCode.B,KeyCode.C,KeyCode.D,KeyCode.E,KeyCode.F,
         KeyCode.G,KeyCode.H,KeyCode.I,KeyCode.J,KeyCode.K,KeyCode.L,
         KeyCode.M,KeyCode.N,KeyCode.O,KeyCode.P,KeyCode.Q,KeyCode.R,
-        KeyCode.S,KeyCode.T,KeyCode.U,KeyCode.V,KeyCode.X,KeyCode.Y,KeyCode.Z,
+        KeyCode.S,KeyCode.T,KeyCode.U,KeyCode.V,KeyCode.X,KeyCode.Y,
+        KeyCode.Z,KeyCode.W,
     };
     private Row[] rows;
     private int rowIndex;
     private int columnIndex;
-    private string[] solutions;
-    private string[] validWords;
+    private ResourcesLoader.WordData wordData;
     private string word;
     [Header("States")]
     public Tile.State emptyState;
@@ -30,11 +30,17 @@ public class Board : MonoBehaviour
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
+        Tile.InitializeState(emptyState, occupiedState, correctState, wrongSpotState, correctState);
     }
-    private void Start()
+    private IEnumerator Start()
     {
-        LoadData();
+        wordData = new ResourcesLoader.WordData();
+        yield return StartCoroutine(LoadData());
         NewGame();
+    }
+    void Update()
+    {
+        HandleRowInput();
     }
     public void NewGame()
     {
@@ -51,30 +57,22 @@ public class Board : MonoBehaviour
         ClearBoard();
         enabled = true;
     }
-    public void LoadData()
+    public IEnumerator LoadData()
     {
-        TextAsset textFile = Resources.Load("official_wordle_all") as TextAsset;
-        validWords = textFile.text.Split("\n");
-
-        textFile = Resources.Load("official_wordle_common") as TextAsset;
-        solutions = textFile.text.Split("\n");
+        yield return StartCoroutine(ResourcesLoader.LoadDataCoroutine(wordData));
     }
     public void SetRandomWord()
     {
-        word = solutions[Random.Range(0, solutions.Length)];
+        word = wordData.solutions[Random.Range(0, wordData.solutions.Length)];
         word = word.ToLower().Trim();
     }
-    void Update()
+
+    private void HandleRowInput()
     {
         Row currentRow = rows[rowIndex];
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            columnIndex = Mathf.Max(columnIndex - 1, 0);
-
-            currentRow.tiles[columnIndex].SetLetter('\0');
-            currentRow.tiles[columnIndex].SetState(emptyState);
-
-            invalidWordText.gameObject.SetActive(false);
+            HandleBackspaceInput(currentRow);
         }
         else if (columnIndex >= currentRow.tiles.Length)
         {
@@ -97,6 +95,17 @@ public class Board : MonoBehaviour
             }
         }
     }
+    private void HandleBackspaceInput(Row currentRow)
+    {
+        columnIndex = Mathf.Max(columnIndex - 1, 0);
+
+        currentRow.tiles[columnIndex].SetLetter('\0');
+        currentRow.tiles[columnIndex].SetState(emptyState);
+
+        invalidWordText.gameObject.SetActive(false);
+    }
+
+
     public void ClearBoard()
     {
         for (int row = 0; row < rows.Length; row++)
@@ -110,9 +119,9 @@ public class Board : MonoBehaviour
     }
     public bool IsvalidWord(string word)
     {
-        for (int i = 0; i < validWords.Length; i++)
+        for (int i = 0; i < wordData.validWords.Length; i++)
         {
-            if (validWords[i] == word)
+            if (wordData.validWords[i] == word)
             {
                 return true;
             }
@@ -137,7 +146,21 @@ public class Board : MonoBehaviour
             invalidWordText.gameObject.SetActive(true);
             return;
         }
+        EvaluateRow(row);
 
+        if (HasWon(row))
+        {
+            enabled = false;
+        }
+        rowIndex++;
+        columnIndex = 0;
+        if (rowIndex >= rows.Length)
+        {
+            enabled = false;
+        }
+    }
+    private void EvaluateRow(Row row)
+    {
         string remaining = word;
         for (int i = 0; i < row.tiles.Length; i++)
         {
@@ -172,16 +195,6 @@ public class Board : MonoBehaviour
                     tile.SetState(incorrectState);
                 }
             }
-        }
-        if (HasWon(row))
-        {
-            enabled = false;
-        }
-        rowIndex++;
-        columnIndex = 0;
-        if (rowIndex >= rows.Length)
-        {
-            enabled = false;
         }
     }
     private void OnEnable()

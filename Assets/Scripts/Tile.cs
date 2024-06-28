@@ -12,6 +12,12 @@ public class Tile : MonoBehaviour
     }
     public char letter { get; private set; }
     public State state { get; private set; }
+    [Header("States")]
+    public static State emptyState;
+    public static State occupiedState;
+    public static State correctState;
+    public static State wrongSpotState;
+    public static State incorrectState;
     private TextMeshProUGUI text;
     public Image fill;
     public Outline outline;
@@ -32,5 +38,13 @@ public class Tile : MonoBehaviour
 
         fill.color = state.fillColor;
         outline.effectColor = state.outlineColor;
+    }
+    public static void InitializeState(State empty, State occupied, State correct, State wrongSpot, State incorrect)
+    {
+        emptyState = empty;
+        occupiedState = occupied;
+        correctState = correct;
+        wrongSpotState = wrongSpot;
+        incorrectState = incorrect;
     }
 }

@@ -16,6 +16,7 @@ public class Board : MonoBehaviour
     private int rowIndex;
     private int columnIndex;
     private ResourcesLoader.WordData wordData;
+    public ScoreKeeper scoreKeeper;
     private string word;
     [Header("States")]
     public Tile.State emptyState;
@@ -30,14 +31,17 @@ public class Board : MonoBehaviour
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
+        scoreKeeper = FindObjectOfType<ScoreKeeper>();
         Tile.InitializeState(emptyState, occupiedState, correctState, wrongSpotState, correctState);
     }
     private IEnumerator Start()
     {
+        HideGameUIElements();
         wordData = new ResourcesLoader.WordData();
         yield return StartCoroutine(LoadData());
         NewGame();
     }
+
     void Update()
     {
         HandleRowInput();
@@ -46,16 +50,27 @@ public class Board : MonoBehaviour
     {
         ClearBoard();
         SetRandomWord();
-        rowIndex = 0;
-        columnIndex = 0;
+        ResetGame();
         enabled = true;
     }
     public void TryAgain()
     {
-        rowIndex = 0;
-        columnIndex = 0;
+        scoreKeeper.SetScore(0);
+        ResetGame();
         ClearBoard();
         enabled = true;
+    }
+    public void ResetGame()
+    {
+        scoreKeeper.GetScore();
+        rowIndex = 0;
+        columnIndex = 0;
+    }
+    void HideGameUIElements()
+    {
+        tryAgainButton.gameObject.SetActive(false);
+        newGameButton.gameObject.SetActive(false);
+        invalidWordText.gameObject.SetActive(false);
     }
     public IEnumerator LoadData()
     {
@@ -137,6 +152,7 @@ public class Board : MonoBehaviour
                 return false;
             }
         }
+        scoreKeeper.IncrementScore();
         return true;
     }
     public void SubmitRow(Row row)

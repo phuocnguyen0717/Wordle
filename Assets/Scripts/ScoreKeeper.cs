@@ -12,7 +12,7 @@ public class ScoreKeeper : MonoBehaviour
     void Start()
     {
         score = 0;
-        scoreText.text = score.ToString();
+        scoreText.text = "Score \n" + score.ToString();
         LoadScoreFromFirebase();
     }
     public void SetScore(int score)

@@ -959,6 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b100b5886acb7fb4497b4aae8a53c90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flipDuration: 0.5
   scoreKeeper: {fileID: 976533766}
   emptyState:
     outlineColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
@@ -967,11 +968,11 @@ MonoBehaviour:
     outlineColor: {r: 0, g: 0, b: 0, a: 1}
     fillColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
   correctState:
-    outlineColor: {r: 0.32812205, g: 0.5566038, b: 0.30718228, a: 1}
-    fillColor: {r: 0.32941177, g: 0.5568628, b: 0.30588236, a: 1}
+    outlineColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
+    fillColor: {r: 0, g: 0, b: 0, a: 1}
   wrongSpotState:
-    outlineColor: {r: 0.6603774, g: 0.6288025, b: 0.3582236, a: 1}
-    fillColor: {r: 0.65882355, g: 0.627451, b: 0.35686275, a: 1}
+    outlineColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
+    fillColor: {r: 0, g: 0, b: 0, a: 1}
   incorrectState:
     outlineColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
     fillColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}

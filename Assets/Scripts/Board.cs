@@ -12,22 +12,24 @@ public class Board : MonoBehaviour
         KeyCode.S,KeyCode.T,KeyCode.U,KeyCode.V,KeyCode.X,KeyCode.Y,
         KeyCode.Z,KeyCode.W,
     };
+
     private Row[] rows;
     private int rowIndex;
     private int columnIndex;
     private ResourcesLoader.WordData wordData;
     public ScoreKeeper scoreKeeper;
-    private string word;
+    public string word { get; set; }
+
     [Header("States")]
     public Tile.State emptyState;
     public Tile.State occupiedState;
     public Tile.State correctState;
     public Tile.State wrongSpotState;
     public Tile.State incorrectState;
+
     [Header("UI")]
     public TextMeshProUGUI invalidWordText;
     public Button tryAgainButton;
-    // public Button newGameButton;
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
@@ -41,7 +43,6 @@ public class Board : MonoBehaviour
         yield return StartCoroutine(LoadData());
         NewGame();
     }
-
     void Update()
     {
         HandleRowInput();
@@ -69,7 +70,6 @@ public class Board : MonoBehaviour
     void HideGameUIElements()
     {
         tryAgainButton.gameObject.SetActive(false);
-        // newGameButton.gameObject.SetActive(false);
         invalidWordText.gameObject.SetActive(false);
     }
     public IEnumerator LoadData()
@@ -119,8 +119,6 @@ public class Board : MonoBehaviour
 
         invalidWordText.gameObject.SetActive(false);
     }
-
-
     public void ClearBoard()
     {
         for (int row = 0; row < rows.Length; row++)
@@ -154,6 +152,11 @@ public class Board : MonoBehaviour
         }
         return true;
     }
+    IEnumerator WaitForSeconds(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        NewGame();
+    }
     public void SubmitRow(Row row)
     {
         if (!IsvalidWord(row.word))
@@ -168,7 +171,7 @@ public class Board : MonoBehaviour
         if (HasWon(row))
         {
             scoreKeeper.IncrementScore();
-            NewGame();
+            StartCoroutine(WaitForSeconds(1.0f));
         }
 
         if (rowIndex >= rows.Length)
@@ -184,49 +187,48 @@ public class Board : MonoBehaviour
     private void EvaluateRow(Row row)
     {
         string remaining = word;
+
         for (int i = 0; i < row.tiles.Length; i++)
         {
             Tile tile = row.tiles[i];
+            ProcessTile(tile, i, word);
+
             if (word[i] == tile.letter)
             {
                 tile.SetState(correctState);
-
-                remaining = remaining.Remove(i, 1);
-                remaining = remaining.Insert(i, " ");
+                remaining = remaining.Remove(i, 1).Insert(i, " ");
             }
             else if (!word.Contains(tile.letter))
             {
                 tile.SetState(incorrectState);
             }
         }
+
         for (int i = 0; i < row.tiles.Length; i++)
         {
             Tile tile = row.tiles[i];
-            if (tile.state != correctState && tile.state != incorrectState)
+            if (tile.state != correctState && tile.state != incorrectState && remaining.Contains(tile.letter))
             {
-                if (remaining.Contains(tile.letter))
-                {
-                    tile.SetState(wrongSpotState);
-
-                    int index = remaining.IndexOf(tile.letter);
-                    remaining = remaining.Remove(index, 1);
-                    remaining = remaining.Insert(1, " ");
-                }
-                else
-                {
-                    tile.SetState(incorrectState);
-                }
+                tile.SetState(wrongSpotState);
+                int index = remaining.IndexOf(tile.letter);
+                remaining = remaining.Remove(index, 1).Insert(index, " ");
             }
         }
+    }
+    private void ProcessTile(Tile tile, int index, string word)
+    {
+        char userGuess = tile.letter;
+        char actualChar = word[index];
+
+        TileAnimator animator = tile.gameObject.GetComponent<TileAnimator>();
+        StartCoroutine(animator.FlipTile(userGuess, actualChar));
     }
     private void OnEnable()
     {
         tryAgainButton.gameObject.SetActive(false);
-        // newGameButton.gameObject.SetActive(false);
     }
     private void OnDisable()
     {
         tryAgainButton.gameObject.SetActive(true);
-        // newGameButton.gameObject.SetActive(true);
     }
 }

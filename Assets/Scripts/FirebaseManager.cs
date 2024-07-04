@@ -36,6 +36,7 @@ public class FirebaseManager : MonoBehaviour
     }
     public void SaveScore(int score)
     {
+        if (dbRef == null) return;
         dbRef.Child("score").SetValueAsync(score);
     }
     public void LoadScore(System.Action<int> onLoaded)

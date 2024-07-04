@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "583531830972",
+    "firebase_url": "https://wordle-b863a-default-rtdb.firebaseio.com",
+    "project_id": "wordle-b863a",
+    "storage_bucket": "wordle-b863a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583531830972:android:4e3dbc9359d04c4bda3ab9",
+        "android_client_info": {
+          "package_name": "com.game.Wordle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfiDYTVY4HsXmwxNgj5VWtRmRI6AZzc8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

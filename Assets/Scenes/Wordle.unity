@@ -275,7 +275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &101732968
 RectTransform:
   m_ObjectHideFlags: 0
@@ -959,6 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b100b5886acb7fb4497b4aae8a53c90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreKeeper: {fileID: 976533766}
   emptyState:
     outlineColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
     fillColor: {r: 0, g: 0, b: 0, a: 1}
@@ -976,7 +977,6 @@ MonoBehaviour:
     fillColor: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
   invalidWordText: {fileID: 460949641}
   tryAgainButton: {fileID: 1737783158}
-  newGameButton: {fileID: 101732969}
 --- !u!114 &796783811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,6 +1191,8 @@ GameObject:
   - component: {fileID: 976533763}
   - component: {fileID: 976533765}
   - component: {fileID: 976533764}
+  - component: {fileID: 976533766}
+  - component: {fileID: 976533767}
   m_Layer: 5
   m_Name: ScoreKeeper
   m_TagString: Untagged
@@ -1316,6 +1318,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 976533762}
   m_CullTransparentMesh: 1
+--- !u!114 &976533766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976533762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6838b213e3f764449ab997bcd5312ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 976533764}
+--- !u!114 &976533767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976533762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d7cf2f33c9f6e843bf46d43bfdca6af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1125082468
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1898,7 +1925,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 132, y: 240}
+  m_AnchoredPosition: {x: 5.22, y: 240}
   m_SizeDelta: {x: 199.6916, y: 64.7301}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1737783158

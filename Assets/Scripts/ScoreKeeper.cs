@@ -13,11 +13,13 @@ public class ScoreKeeper : MonoBehaviour
     {
         score = 0;
         scoreText.text = score.ToString();
+        LoadScoreFromFirebase();
     }
     public void SetScore(int score)
     {
         this.score = score;
         scoreText.text = this.score.ToString();
+        SaveScoreToFirebase(score);
     }
     public int GetScore()
     {
@@ -28,9 +30,18 @@ public class ScoreKeeper : MonoBehaviour
     {
         score += 10;
         scoreText.text = score.ToString();
+        SaveScoreToFirebase(score);
     }
-    public int EndGameScore()
+    private void SaveScoreToFirebase(int score)
     {
-        return score = 0;
+        FirebaseManager.Instance.SaveScore(score);
+    }
+    private void LoadScoreFromFirebase()
+    {
+        FirebaseManager.Instance.LoadScore(loadedScore =>
+        {
+            score = loadedScore;
+            scoreText.text = score.ToString();
+        });
     }
 }

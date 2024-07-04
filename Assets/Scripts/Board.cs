@@ -27,7 +27,7 @@ public class Board : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI invalidWordText;
     public Button tryAgainButton;
-    public Button newGameButton;
+    // public Button newGameButton;
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
@@ -69,7 +69,7 @@ public class Board : MonoBehaviour
     void HideGameUIElements()
     {
         tryAgainButton.gameObject.SetActive(false);
-        newGameButton.gameObject.SetActive(false);
+        // newGameButton.gameObject.SetActive(false);
         invalidWordText.gameObject.SetActive(false);
     }
     public IEnumerator LoadData()
@@ -152,7 +152,6 @@ public class Board : MonoBehaviour
                 return false;
             }
         }
-        scoreKeeper.IncrementScore();
         return true;
     }
     public void SubmitRow(Row row)
@@ -164,16 +163,23 @@ public class Board : MonoBehaviour
         }
         EvaluateRow(row);
 
+        AdvanceRow();
+
         if (HasWon(row))
         {
-            enabled = false;
+            scoreKeeper.IncrementScore();
+            NewGame();
         }
-        rowIndex++;
-        columnIndex = 0;
+
         if (rowIndex >= rows.Length)
         {
             enabled = false;
         }
+    }
+    private void AdvanceRow()
+    {
+        rowIndex++;
+        columnIndex = 0;
     }
     private void EvaluateRow(Row row)
     {
@@ -216,11 +222,11 @@ public class Board : MonoBehaviour
     private void OnEnable()
     {
         tryAgainButton.gameObject.SetActive(false);
-        newGameButton.gameObject.SetActive(false);
+        // newGameButton.gameObject.SetActive(false);
     }
     private void OnDisable()
     {
         tryAgainButton.gameObject.SetActive(true);
-        newGameButton.gameObject.SetActive(true);
+        // newGameButton.gameObject.SetActive(true);
     }
 }

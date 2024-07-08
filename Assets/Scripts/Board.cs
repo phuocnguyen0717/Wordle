@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class Board : MonoBehaviour
 {
     private static readonly KeyCode[] SUPPORTED_KEYS = new KeyCode[]{
@@ -17,7 +16,6 @@ public class Board : MonoBehaviour
     private int rowIndex;
     private int columnIndex;
     private ResourcesLoader.WordData wordData;
-    public ScoreKeeper scoreKeeper;
     public string word { get; set; }
 
     [Header("States")]
@@ -30,6 +28,8 @@ public class Board : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI invalidWordText;
     public Button tryAgainButton;
+    public ScoreKeeper scoreKeeper;
+    public Suggest suggest;
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
@@ -45,6 +45,7 @@ public class Board : MonoBehaviour
     }
     void Update()
     {
+
         HandleRowInput();
     }
     public void NewGame()
@@ -64,6 +65,7 @@ public class Board : MonoBehaviour
     public void ResetGame()
     {
         scoreKeeper.GetScore();
+        suggest.SuggestTextClear();
         rowIndex = 0;
         columnIndex = 0;
     }
@@ -75,6 +77,10 @@ public class Board : MonoBehaviour
     public IEnumerator LoadData()
     {
         yield return StartCoroutine(ResourcesLoader.LoadDataCoroutine(wordData));
+    }
+    public void SuggestCharacter()
+    {
+        suggest.RandomCharacter(word);
     }
     public void SetRandomWord()
     {

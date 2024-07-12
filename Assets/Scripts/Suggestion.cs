@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Suggest : MonoBehaviour
+public class Suggestion : MonoBehaviour
 {
     public TextMeshProUGUI suggestText;
     private List<int> usedIndices = new List<int>();

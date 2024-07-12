@@ -28,8 +28,9 @@ public class Board : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI invalidWordText;
     public Button tryAgainButton;
+    public Button newGameButton;
     public ScoreKeeper scoreKeeper;
-    public Suggest suggest;
+    public Suggestion suggestion;
     private void Awake()
     {
         rows = GetComponentsInChildren<Row>();
@@ -65,7 +66,7 @@ public class Board : MonoBehaviour
     public void ResetGame()
     {
         scoreKeeper.GetScore();
-        suggest.SuggestTextClear();
+        suggestion.SuggestTextClear();
         rowIndex = 0;
         columnIndex = 0;
     }
@@ -80,7 +81,7 @@ public class Board : MonoBehaviour
     }
     public void SuggestCharacter()
     {
-        suggest.RandomCharacter(word);
+        suggestion.RandomCharacter(word);
     }
     public void SetRandomWord()
     {
@@ -172,7 +173,7 @@ public class Board : MonoBehaviour
         }
         EvaluateRow(row);
 
-        AdvanceRow();
+        IncreaseRow();
 
         if (HasWon(row))
         {
@@ -185,7 +186,7 @@ public class Board : MonoBehaviour
             enabled = false;
         }
     }
-    private void AdvanceRow()
+    private void IncreaseRow()
     {
         rowIndex++;
         columnIndex = 0;
